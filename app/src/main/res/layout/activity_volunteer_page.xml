@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#C63E9F"
+    tools:context=".VolunteerPage">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi"
+            android:layout_gravity="center_horizontal"
+            style="@style/HeadingStyle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volunteers"
+            style="@style/HeadingStyle"/>
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="12dp"
+        android:padding="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_corner">
+        <RadioButton
+            android:id="@+id/findCause_radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find a cause"
+            style="@style/RadioButtonsFontStyle" />
+        <RadioButton
+            android:id="@+id/startCause_radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start a cause"
+            style="@style/RadioButtonsFontStyle"/>
+    </RadioGroup>
+
+</LinearLayout>

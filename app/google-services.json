@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "858196903425",
+    "project_id": "causeconnect-e94ff",
+    "storage_bucket": "causeconnect-e94ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858196903425:android:ad77c45876b07e6bff2200",
+        "android_client_info": {
+          "package_name": "com.example.causeconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858196903425-ftfevih6pbho6mo2bio037kd4007cj2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.causeconnect",
+            "certificate_hash": "19615d526a540abfa85727fad9cbca2a2f127768"
+          }
+        },
+        {
+          "client_id": "858196903425-6927v6lrn35qbnerg7q72f1dl4jjnl68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADm2GDCi7ZVWi-D4pWXKg0Gc6ntlp0qM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858196903425-6927v6lrn35qbnerg7q72f1dl4jjnl68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
