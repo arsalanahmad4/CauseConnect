@@ -56,7 +56,8 @@
         android:layout_marginRight="4pt"
         android:layout_marginLeft="4pt"
         android:layout_marginTop="10pt"
-        android:text="LOG IN"/>
+        android:text="LOG IN"
+        android:background="@drawable/rounded_corner"/>
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="match_parent"
@@ -64,7 +65,8 @@
         android:layout_marginRight="4pt"
         android:layout_marginLeft="4pt"
         android:layout_marginTop="10pt"
-        android:text="SIGN UP"/>
+        android:text="SIGN UP"
+        android:background="@drawable/rounded_corner"/>
 
 
 </LinearLayout>

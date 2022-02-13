@@ -20,7 +20,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class ListedOrganization extends AppCompatActivity implements OnMapReadyCallback {
+public class ListedEvents extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
 
     FirebaseFirestore fStore;

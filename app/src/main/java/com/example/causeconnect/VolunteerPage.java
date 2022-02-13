@@ -19,7 +19,7 @@ public class VolunteerPage extends AppCompatActivity {
         findCause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(VolunteerPage.this,ListedOrganization.class);
+                Intent i = new Intent(VolunteerPage.this, ListedEvents.class);
                 startActivity(i);
             }
         });

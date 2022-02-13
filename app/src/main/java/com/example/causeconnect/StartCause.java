@@ -12,7 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -80,10 +82,35 @@ public class StartCause extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
+
                 String name = mName.getText().toString();
                 String org = mOrgName.getText().toString();
                 String services = mServices.getText().toString();
                 String city = mCity.getText().toString();
+                if(name.isEmpty())
+                {
+                    mName.setError("Name is empty");
+                    mName.requestFocus();
+                    return;
+                }
+                if(org.isEmpty())
+                {
+                    mOrgName.setError("Create an Organization first");
+                    mOrgName.requestFocus();
+                    return;
+                }
+                if(services.isEmpty())
+                {
+                    mServices.setError("Enter services");
+                    mServices.requestFocus();
+                    return;
+                }
+                if(city.isEmpty())
+                {
+                    mCity.setError("Enter city name");
+                    mCity.requestFocus();
+                    return;
+                }
 
 
                 userID = fAuth.getCurrentUser().getUid();
@@ -102,10 +129,29 @@ public class StartCause extends AppCompatActivity  {
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(getApplicationContext(),"Organization Successfully Created!",Toast.LENGTH_SHORT).show();
                                 Log.d(TAG,"Success!");
-                                //startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                                Intent intent = new Intent(StartCause.this, VolunteerPage.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(StartCause.this);
+                                builder.setTitle("Dashboard")
+                                        .setMessage("Which dashboard you want to shift to ? ")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Organization", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(StartCause.this, OrganizationPage.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .setNegativeButton("Volunteer", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(StartCause.this, VolunteerPage.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+                                                }
+                                        });
+                                //Creating dialog box
+                                AlertDialog dialog  = builder.create();
+                                dialog.show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

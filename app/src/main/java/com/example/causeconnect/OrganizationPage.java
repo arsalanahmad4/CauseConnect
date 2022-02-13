@@ -11,6 +11,7 @@ public class OrganizationPage extends AppCompatActivity {
 
     RadioButton createEvent;
     RadioButton hireVolunteer;
+    RadioButton startCause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,15 @@ public class OrganizationPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(OrganizationPage.this,ListedVolunteers.class);
+                startActivity(i);
+            }
+        });
+
+        startCause = findViewById(R.id.start_cause);
+        startCause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OrganizationPage.this,StartCause.class);
                 startActivity(i);
             }
         });

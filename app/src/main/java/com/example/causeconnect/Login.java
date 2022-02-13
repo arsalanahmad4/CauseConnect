@@ -27,6 +27,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -41,6 +46,8 @@ public class Login extends AppCompatActivity implements LocationListener {
     FirebaseFirestore fStore;
     String userID;
     public static final String TAG = "TAG";
+
+
 
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -122,6 +129,7 @@ public class Login extends AppCompatActivity implements LocationListener {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     uploadData();
+
                                     Intent volunteer = new Intent(Login.this,VolunteerPage.class);
                                     startActivity(volunteer);
                                     Login.this.finish();}
@@ -157,6 +165,7 @@ public class Login extends AppCompatActivity implements LocationListener {
     }
     public void uploadData(){
         String name = username;
+
 
         double latitude = lat;
         double longitude = lng;

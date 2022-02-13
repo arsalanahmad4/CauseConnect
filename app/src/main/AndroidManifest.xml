@@ -17,7 +17,7 @@
             android:name=".StartCause"
             android:exported="false" />
         <activity
-            android:name=".ListedOrganization"
+            android:name=".ListedEvents"
             android:exported="false" />
         <activity
             android:name=".EventLocation"

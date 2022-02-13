@@ -50,11 +50,18 @@
             android:text="Create an event"
             style="@style/RadioButtonsFontStyle" />
         <RadioButton
+            android:id="@+id/start_cause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start a cause"
+            style="@style/RadioButtonsFontStyle"/>
+        <RadioButton
             android:id="@+id/fundraiser_radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Host a fundraiser"
             style="@style/RadioButtonsFontStyle" />
+
     </RadioGroup>
 
 
