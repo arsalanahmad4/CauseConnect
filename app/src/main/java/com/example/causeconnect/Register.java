@@ -1,12 +1,11 @@
 package com.example.causeconnect;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,12 +16,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,11 +32,12 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
     Button btn2_signup;
     Button btn_login;
-    EditText e_mail, pass_word,user_name;
+    EditText e_mail, pass_word,phone_number;
+    public EditText user_name;
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
 
-    DatabaseReference myRef;
+
 
     public static String username;
     String userID;
@@ -49,6 +50,7 @@ public class Register extends AppCompatActivity {
         e_mail=findViewById(R.id.email);
         pass_word=findViewById(R.id.password1);
         user_name=findViewById(R.id.username);
+        phone_number=findViewById(R.id.phone_number);
         btn2_signup=findViewById(R.id.sign);
         btn_login = findViewById(R.id.login);
         mAuth=FirebaseAuth.getInstance();
@@ -115,40 +117,33 @@ public class Register extends AppCompatActivity {
 
     }
 
-    public void RegisterNow(String username,String email,String password){
-        mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+
+    public void uploadUserData(){
+        String email = e_mail.getText().toString();
+        String phoneNumber = phone_number.getText().toString();
+        userID = mAuth.getCurrentUser().getUid();
+        CollectionReference collectionReference = fStore.collection("Users data");
+        Map<String,Object> user = new HashMap<>();
+        user.put("timestamp", FieldValue.serverTimestamp());
+        user.put("userid",userID);
+        user.put("email",email);
+        user.put("phoneNumber",phoneNumber);
+
+
+        collectionReference.add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            String userid = firebaseUser.getUid();
+                    public void onSuccess(DocumentReference documentReference) {
 
-                            myRef = FirebaseDatabase.getInstance()
-                                    .getReference("MyUsers").child(userid);
-
-                            HashMap<String,Object> user = new HashMap<>();
-                            user.put("timestamp", FieldValue.serverTimestamp());
-                            user.put("name",username);
-                            user.put("userid",userID);
-                            user.put("imageUrl","default");
-
-                            myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Intent i = new Intent(Register.this,Login.class);
-                                        startActivity(i);
-                                        Register.this.finish();
-                                    }
-                                    else{
-                                        Toast.makeText(Register.this,"Invalid User",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_SHORT).show();
+                        //Log.w(TAG, "Error!", e);
                     }
                 });
-
     }
 }

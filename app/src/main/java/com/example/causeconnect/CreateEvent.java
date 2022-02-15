@@ -37,7 +37,7 @@ import java.util.List;
 public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private AutoCompleteTextView mSearchText;
-    private EditText mName;
+    private EditText mName,mNumber;
     private Spinner mOrg;
     private EditText mCause;
 
@@ -45,9 +45,10 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     public static double longitude;
     public static String enteredAddress;
 
-    public static String  name;
+    public static String name;
     public static String organizationName;
     public static String cause;
+    public static int phoneNumber;
 
 
     private FirebaseFirestore cloudstorage;
@@ -62,6 +63,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
 
         mName= findViewById(R.id.name_of_event_creator);
         mOrg= findViewById(R.id.org_name);
+        mNumber = findViewById(R.id.phone_no);
 
 
         getOrganization();
@@ -82,6 +84,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                 name = mName.getText().toString();
                 organizationName = mOrg.getSelectedItem().toString();
                 cause = mCause.getText().toString();
+
 
                 if(name.isEmpty()){
                     mName.setError("Enter the name");

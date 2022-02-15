@@ -6,6 +6,7 @@ import static com.example.causeconnect.CreateEvent.latitude;
 import static com.example.causeconnect.CreateEvent.longitude;
 import static com.example.causeconnect.CreateEvent.name;
 import static com.example.causeconnect.CreateEvent.organizationName;
+import static com.example.causeconnect.CreateEvent.phoneNumber;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

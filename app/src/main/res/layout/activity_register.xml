@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please login"
+        android:text="Please Signup"
         android:fontFamily="casual"
         android:textStyle="bold"
         android:textColor="@color/white"/>
@@ -31,6 +31,18 @@
         android:layout_marginLeft="4pt"
         android:layout_marginTop="10pt"
         android:hint="Please enter your name"
+        android:padding="12dp"
+        android:background="@drawable/rounded_corner"
+        android:fontFamily="casual"/>
+    <EditText
+        android:id="@+id/phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4pt"
+        android:layout_marginLeft="4pt"
+        android:layout_marginTop="10pt"
+        android:hint="Please enter your phone number"
+        android:inputType="phone"
         android:padding="12dp"
         android:background="@drawable/rounded_corner"
         android:fontFamily="casual"/>

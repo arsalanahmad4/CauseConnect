@@ -3,7 +3,9 @@ package com.example.causeconnect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -70,7 +73,6 @@ public class ListedEvents extends AppCompatActivity implements OnMapReadyCallbac
                                         LatLng latLng = new LatLng(latitude, longitude);
                                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                         mMap.addMarker(new MarkerOptions().position(latLng).title(name+"("+org+")").snippet(cause).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
                                 }
                             }
                         } else {
