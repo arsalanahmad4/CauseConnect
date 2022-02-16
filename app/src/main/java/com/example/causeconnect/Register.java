@@ -9,10 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,120 +33,101 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Register extends AppCompatActivity {
-    Button btn2_signup;
-    Button btn_login;
-    EditText e_mail, pass_word,phone_number;
-    public EditText user_name;
-    FirebaseAuth mAuth;
+    public static final String TAG = "TAG";
+    EditText mFullName,mEmail,mPassword,mPhone;
+    Button mRegisterBtn;
+    TextView mLoginBtn;
+    FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-
-
-
-    public static String username;
     String userID;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        e_mail=findViewById(R.id.email);
-        pass_word=findViewById(R.id.password1);
-        user_name=findViewById(R.id.username);
-        phone_number=findViewById(R.id.phone_number);
-        btn2_signup=findViewById(R.id.sign);
-        btn_login = findViewById(R.id.login);
-        mAuth=FirebaseAuth.getInstance();
 
+        mFullName = findViewById(R.id.username);
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password1);
+        mPhone = findViewById(R.id.phone_number);
+        mRegisterBtn=findViewById(R.id.sign);
+        mLoginBtn = findViewById(R.id.login);
 
+        fAuth=FirebaseAuth.getInstance();
+        fStore=FirebaseFirestore.getInstance();
 
-        btn2_signup.setOnClickListener(new View.OnClickListener() {
+//        if(fAuth.getCurrentUser() !=null){
+//            //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+//            //finish();
+//            Intent intent = new Intent(Signup.this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        }
+
+        mRegisterBtn.setOnClickListener(new View.OnClickListener ()
+        {
             @Override
-            public void onClick(View v) {
-                String email = e_mail.getText().toString().trim();
-                String password= pass_word.getText().toString().trim();
-                if(email.isEmpty())
+            public void onClick(View v)
+            {
+                String email = mEmail.getText().toString().trim();
+                String password= mPassword.getText().toString().trim();
+                String name= mFullName.getText().toString().trim();
+                String phone= mPhone.getText().toString().trim();
+
+                if(TextUtils.isEmpty(email))
                 {
-                    e_mail.setError("Email is empty");
-                    e_mail.requestFocus();
+                    mEmail.setError("Email is Required.");
                     return;
                 }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+
+                if(TextUtils.isEmpty(password))
                 {
-                    e_mail.setError("Enter the valid email address");
-                    e_mail.requestFocus();
+                    mPassword.setError("Password is Required.");
                     return;
                 }
-                if(password.isEmpty())
+
+                if(password.length() < 6)
                 {
-                    pass_word.setError("Enter the password");
-                    pass_word.requestFocus();
+                    mPassword.setError("Password Must be >=6 Characters");
                     return;
                 }
-                if(password.length()<6)
-                {
-                    pass_word.setError("Length of the password should be more than 6");
-                    pass_word.requestFocus();
-                    return;
-                }
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            username = user_name.getText().toString();
-
-                            Toast.makeText(Register.this,"You are successfully Registered", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(Register.this,Login.class);
-                            startActivity(i);
+                        if(task.isSuccessful()){
+                            Toast.makeText(Register.this, "User Created.", Toast.LENGTH_SHORT) .show();
+                            userID = fAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = fStore.collection("Users data").document(userID);
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("name",name);
+                            user.put("email",email);
+                            user.put("phone",phone);
+                            user.put("uid",userID);
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG,"onSuccess: user Profile is created for "+ userID);
+                                    Toast.makeText(Register.this, "Registered Successfully.", Toast.LENGTH_SHORT) .show();
+                                }
+                            });
+                            //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            Intent intent = new Intent(Register.this, Login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
-                        else
-                        {
-                            Toast.makeText(Register.this,"You are not Registered! Try again",Toast.LENGTH_SHORT).show();
+                        else{
+                            Toast.makeText(Register.this, "Error!" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
             }
         });
-
-        btn_login.setOnClickListener(new View.OnClickListener() {
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Register.this,Login.class);
-                startActivity(i);
+                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
-
-    }
-
-
-
-    public void uploadUserData(){
-        String email = e_mail.getText().toString();
-        String phoneNumber = phone_number.getText().toString();
-        userID = mAuth.getCurrentUser().getUid();
-        CollectionReference collectionReference = fStore.collection("Users data");
-        Map<String,Object> user = new HashMap<>();
-        user.put("timestamp", FieldValue.serverTimestamp());
-        user.put("userid",userID);
-        user.put("email",email);
-        user.put("phoneNumber",phoneNumber);
-
-
-        collectionReference.add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_SHORT).show();
-                        //Log.w(TAG, "Error!", e);
-                    }
-                });
     }
 }

@@ -37,7 +37,8 @@ import java.util.List;
 public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private AutoCompleteTextView mSearchText;
-    private EditText mName,mNumber;
+    private EditText mName;
+    private EditText mNumber;
     private Spinner mOrg;
     private EditText mCause;
 
@@ -48,7 +49,7 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     public static String name;
     public static String organizationName;
     public static String cause;
-    public static int phoneNumber;
+    public static String phoneNumber;
 
 
     private FirebaseFirestore cloudstorage;
@@ -81,9 +82,10 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
 
-                name = mName.getText().toString();
-                organizationName = mOrg.getSelectedItem().toString();
-                cause = mCause.getText().toString();
+                name = mName.getText().toString().trim();
+                organizationName = mOrg.getSelectedItem().toString().trim();
+                cause = mCause.getText().toString().trim();
+                phoneNumber = mNumber.getText().toString().trim();
 
 
                 if(name.isEmpty()){
@@ -92,12 +94,17 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                     return;
                 }
                 if(organizationName.isEmpty()){
-                    mName.requestFocus();
+                    mOrg.requestFocus();
                     return;
                 }
                 if(cause.isEmpty()){
                     mCause.setError("Enter the cause");
                     mCause.requestFocus();
+                    return;
+                }
+                if(phoneNumber.isEmpty()){
+                    mNumber.setError("Enter the phone number");
+                    mNumber.requestFocus();
                     return;
                 }
 

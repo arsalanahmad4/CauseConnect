@@ -1,6 +1,6 @@
 package com.example.causeconnect;
 
-import static com.example.causeconnect.Register.username;
+//import static com.example.causeconnect.Register.username;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -22,13 +22,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +46,7 @@ public class Login extends AppCompatActivity implements LocationListener {
     private EditText e_mail, pass_word;
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
+    private FirebaseFirestore cloudstorage;
     String userID;
     public static final String TAG = "TAG";
 
@@ -121,7 +131,7 @@ public class Login extends AppCompatActivity implements LocationListener {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    uploadData();
+                                    uploadAndGetData();
 
                                     Intent volunteer = new Intent(Login.this,VolunteerPage.class);
                                     startActivity(volunteer);
@@ -157,20 +167,26 @@ public class Login extends AppCompatActivity implements LocationListener {
         Log.v("Activity location ", String.valueOf(lat)+"latitude of volunteer");
     }
     public void uploadData(){
-        String name = username;
+
+        userID = mAuth.getCurrentUser().getUid();
+
+
 
 
         double latitude = lat;
         double longitude = lng;
 
+
+
         Log.v("Activity location ", String.valueOf(latitude));
 
 
-        userID = mAuth.getCurrentUser().getUid();
+
         CollectionReference collectionReference = fStore.collection("Volunteer data");
         Map<String,Object> user = new HashMap<>();
         user.put("timestamp", FieldValue.serverTimestamp());
-        user.put("name",name);
+//        user.put("name", phoneNumber);
+//        user.put("phone",name);
         user.put("volunteerLatitude",latitude);
         user.put("volunteerLongitude",longitude);
         user.put("userid",userID);
@@ -187,5 +203,57 @@ public class Login extends AppCompatActivity implements LocationListener {
                         Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void uploadAndGetData(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String currentid = user.getUid();
+        DocumentReference reference;
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        double latitude = lat;
+        double longitude = lng;
+
+        reference = firestore.collection("Users data").document(currentid);
+        reference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.getResult().exists()){
+                    String nameResult = task.getResult().getString("name");
+                    String phoneNo = task.getResult().getString("phone");
+
+
+
+
+                    Log.v("Activity location ", String.valueOf(latitude));
+
+
+
+                    CollectionReference collectionReference = fStore.collection("Volunteer data");
+                    Map<String,Object> user = new HashMap<>();
+                    user.put("timestamp", FieldValue.serverTimestamp());
+                    user.put("name", nameResult);
+                    user.put("phone",phoneNo);
+                    user.put("volunteerLatitude",latitude);
+                    user.put("volunteerLongitude",longitude);
+                    user.put("userid",currentid);
+                    collectionReference.add(user)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(getApplicationContext(),"Successfully Registered as Volunteer",Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(),"Error!",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                }
+            }
+        });
+
+
     }
 }

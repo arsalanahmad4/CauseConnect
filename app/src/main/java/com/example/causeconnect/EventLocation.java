@@ -98,6 +98,7 @@ public class EventLocation extends AppCompatActivity implements OnMapReadyCallba
                 user.put("timestamp", FieldValue.serverTimestamp());
                 user.put("name",name);
                 user.put("organizationName",organizationName);
+                user.put("phone",phoneNumber);
                 user.put("cause",cause);
                 user.put("address",enteredAddress);
                 user.put("locationLatitude",latitude);
