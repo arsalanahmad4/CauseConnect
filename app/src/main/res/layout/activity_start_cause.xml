@@ -80,8 +80,8 @@
         android:text="Create an Organization"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:textColor="@color/white"
-        android:background="@drawable/rounded_corner"
+        android:textColor="@color/black"
+        android:background="@drawable/rounded_corner_button"
         android:elevation="24dp"/>
 
 

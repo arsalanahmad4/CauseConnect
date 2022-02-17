@@ -3,6 +3,8 @@ package com.example.causeconnect;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -66,6 +68,7 @@ public class ListedEvents extends AppCompatActivity implements OnMapReadyCallbac
                                     String name = (String) document.get("name");
                                     String org = (String) document.get("organizationName");
                                     String cause = (String) document.get("cause");
+                                    String number =(String)document.get("phone");
                                     double latitude = (double) document.get("locationLatitude");
                                     double longitude = (double) document.get("locationLongitude");
 
@@ -73,6 +76,38 @@ public class ListedEvents extends AppCompatActivity implements OnMapReadyCallbac
                                         LatLng latLng = new LatLng(latitude, longitude);
                                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                         mMap.addMarker(new MarkerOptions().position(latLng).title(name+"("+org+")").snippet(cause).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(@NonNull Marker marker) {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(ListedEvents.this);
+                                            builder.setTitle("Contact")
+                                                    .setMessage("Do you want to call the organization ? ")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            String posted_by = number;
+
+                                                            String uri = "tel:" + posted_by.trim() ;
+                                                            Intent intent = new Intent(Intent.ACTION_CALL);
+                                                            intent.setData(Uri.parse(uri));
+                                                            startActivity(intent);
+                                                        }
+                                                    })
+                                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                            //Creating dialog box
+                                            AlertDialog dialog  = builder.create();
+                                            dialog.show();
+                                            return false;
+                                        }
+                                    });
+
                                 }
                             }
                         } else {
