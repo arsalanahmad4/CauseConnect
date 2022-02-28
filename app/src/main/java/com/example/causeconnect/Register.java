@@ -9,8 +9,12 @@ import androidx.core.content.ContextCompat;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,10 +32,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -47,6 +53,7 @@ public class Register extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userID;
     DatabaseReference reference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +159,24 @@ public class Register extends AppCompatActivity {
         });
     }
 
-//    @Override
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Intent i = new Intent(Register.this,OrganizationPage.class);
+            startActivity(i);
+            finish();
+        } else {
+            // User is signed out
+            Log.d(TAG, "onAuthStateChanged:signed_out");
+        }
+    }
+
+
+
+
+    //    @Override
 //    public void onRequestPermissionsResult(int requestCode, String[] permissions,
 //                                           int[] grantResults) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);

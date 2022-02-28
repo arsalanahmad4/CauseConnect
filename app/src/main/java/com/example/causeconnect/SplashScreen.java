@@ -85,7 +85,7 @@ public class SplashScreen extends AppCompatActivity {
         if (!addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION))
             permissionsNeeded.add("FINE LOCATION");
         if (!addPermission(permissionsList, Manifest.permission.CALL_PHONE))
-            permissionsNeeded.add("CALL PHONE");
+            permissionsNeeded.add("FINE LOCATION");
 
         if (permissionsList.size() > 0) {
             if (permissionsNeeded.size() > 0) {
@@ -192,7 +192,9 @@ public class SplashScreen extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
             Map<String, Integer> perms = new HashMap<String, Integer>();
             // Initial
-
+            perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
             //Toast.makeText(SplashScreen.this, " Permissions are jddddd", Toast.LENGTH_SHORT).show();
             // Fill with results
             for (int i = 0; i < permissions.length; i++)
@@ -238,7 +240,7 @@ public class SplashScreen extends AppCompatActivity {
                     // Thread will sleep for 10 seconds
                     sleep(4*1000);
 
-                    startActivity(new Intent(getApplicationContext(),Login.class));
+                    startActivity(new Intent(getApplicationContext(),Register.class));
                     finish();
 
                 } catch (Exception e) {

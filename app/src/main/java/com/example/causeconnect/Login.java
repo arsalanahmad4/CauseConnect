@@ -11,7 +11,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
@@ -158,6 +160,17 @@ public class Login extends AppCompatActivity implements LocationListener {
         btn_sign.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, Register.class));
         });
+    }
+    private void turnGPSOn(){
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if(!provider.contains("gps")){ //if gps is disabled
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            sendBroadcast(poke);
+        }
     }
 
 
