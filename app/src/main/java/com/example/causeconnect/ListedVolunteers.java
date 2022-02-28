@@ -26,6 +26,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ListedVolunteers extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap mMap;
@@ -59,7 +61,7 @@ public class ListedVolunteers extends AppCompatActivity implements OnMapReadyCal
     }
 
     public void showLocation() {
-
+         Map<Marker, Volunteer> markersMap = new HashMap<Marker, Volunteer>();
         this.cloudstorage = FirebaseFirestore.getInstance();
         cloudstorage.collection("Volunteer data")
                 .get()
@@ -71,37 +73,49 @@ public class ListedVolunteers extends AppCompatActivity implements OnMapReadyCal
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 if (document.contains("volunteerLatitude") && document.contains("volunteerLongitude")) {
                                     String name = (String)document.get("name");
-                                    String uid = (String)document.get("userid");
                                     String number =(String)document.get("phone");
+                                    String uid_vol = (String)document.get("userid");
                                     double latitude = (double) document.get("volunteerLatitude");
                                     double longitude = (double) document.get("volunteerLongitude");
 
-                                    if(latitude!=0 && longitude!=0){
+
                                         LatLng latLng = new LatLng(latitude, longitude);
                                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                        mMap.addMarker(new MarkerOptions().position(latLng).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                        Marker marker1 = mMap.addMarker(new MarkerOptions().position(latLng).title(name).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                        markersMap.put(marker1,new Volunteer(uid_vol,name,number));
                                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                             @Override
                                             public boolean onMarkerClick(@NonNull Marker marker) {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(ListedVolunteers.this);
-                                                builder.setTitle("Contact")
-                                                        .setMessage("Do you want to call the volunteer ? ")
-                                                        .setCancelable(false)
-                                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                String posted_by = number;
+//                                                Log.d("volunteer", "onChat: "+uid_vol);
+//                                                Log.d("volunteer", "onChat: "+name);
+//                                                Log.d("volunteer", "onChat: "+number);
+                                                String uid_marker = markersMap.get(marker).getUid();
+                                                String number_marker = markersMap.get(marker).getNumber();
 
-                                                                String uri = "tel:" + posted_by.trim() ;
-                                                                Intent intent = new Intent(Intent.ACTION_CALL);
-                                                                intent.setData(Uri.parse(uri));
-                                                                startActivity(intent);
-                                                            }
-                                                        })
-                                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                                            @Override
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(ListedVolunteers.this);
+                                                builder.setTitle("Do you want to contact the organization?");
+                                                builder.setItems(new CharSequence[]
+                                                                {"Chat", "Call"},
+                                                        new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int which) {
-                                                                dialog.cancel();
+                                                                // The 'which' argument contains the index position
+                                                                // of the selected item
+                                                                switch (which) {
+                                                                    case 0:
+                                                                        Toast.makeText(ListedVolunteers.this, "Chat...", Toast.LENGTH_SHORT).show();
+                                                                        Intent intent1 = new Intent(ListedVolunteers.this, MessageActivity.class);
+                                                                        intent1.putExtra("userid", uid_marker);
+                                                                        startActivity(intent1);
+                                                                        break;
+                                                                    case 1:
+                                                                        Toast.makeText(ListedVolunteers.this, "Calling...", Toast.LENGTH_SHORT).show();
+                                                                        String posted_by = number_marker;
+                                                                        String uri = "tel:" + posted_by.trim() ;
+                                                                        Intent intent = new Intent(Intent.ACTION_CALL);
+                                                                        intent.setData(Uri.parse(uri));
+                                                                        startActivity(intent);
+                                                                        break;
+                                                                }
                                                             }
                                                         });
                                                 //Creating dialog box
@@ -110,7 +124,7 @@ public class ListedVolunteers extends AppCompatActivity implements OnMapReadyCal
                                                 return false;
                                             }
                                         });
-                                    }
+
 
                                 }
                             }

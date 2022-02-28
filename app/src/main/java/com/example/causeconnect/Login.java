@@ -74,6 +74,7 @@ public class Login extends AppCompatActivity implements LocationListener {
         this.fStore = FirebaseFirestore.getInstance();
         this.mAuth = FirebaseAuth.getInstance();
 
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;

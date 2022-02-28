@@ -30,6 +30,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:hint="Please enter your name"
+        android:textColorHint="@color/quantum_grey"
         android:fontFamily="casual"
         android:gravity="center"
         android:layout_marginBottom="16dp"
@@ -54,6 +55,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:hint="Please write the cause of your event"
+        android:textColorHint="@color/quantum_grey"
         android:fontFamily="casual"
         android:gravity="center"
         android:layout_marginBottom="16dp"
@@ -65,6 +67,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:hint="Please write the address of your event"
+        android:textColorHint="@color/quantum_grey"
         android:fontFamily="casual"
         android:gravity="center"
         android:background="@drawable/rounded_corner"
@@ -77,6 +80,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:hint="Please enter your mobile number"
+        android:textColorHint="@color/quantum_grey"
         android:inputType="phone"
         android:fontFamily="casual"
         android:gravity="center"
@@ -110,6 +114,7 @@
             android:background="@drawable/rounded_corner"
             android:fontFamily="casual"
             android:hint="write here"
+            android:textColorHint="@color/quantum_grey"
             android:padding="8dp"
             tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
@@ -123,7 +128,8 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:background="@drawable/rounded_corner_button"
-        android:elevation="24dp"/>
+        android:elevation="24dp"
+        android:padding="4dp"/>
 
 
 </LinearLayout>

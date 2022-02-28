@@ -1,54 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:background="#C63E9F"
+    android:orientation="vertical"
     tools:context=".VolunteerPage">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_gravity="end"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/chat_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/stat_notify_chat"
+            tools:ignore="SpeakableTextPresentCheck"/>
+        <ImageButton
+            android:id="@+id/logout_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/logout_foreground" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"
         android:layout_marginTop="16dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <TextView
+            style="@style/HeadingStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hi"
             android:layout_gravity="center_horizontal"
-            style="@style/HeadingStyle"/>
+            android:text="Hi" />
+
         <TextView
+            style="@style/HeadingStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Volunteers"
-            style="@style/HeadingStyle"/>
+            android:text="Volunteers" />
 
     </LinearLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_margin="12dp"
-        android:padding="16dp"
         android:layout_weight="1"
-        android:background="@drawable/rounded_corner">
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical"
+        android:padding="16dp">
+
         <RadioButton
             android:id="@+id/findCause_radioButton"
+            style="@style/RadioButtonsFontStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find a cause"
-            style="@style/RadioButtonsFontStyle" />
+            android:text="Find a cause" />
+
         <RadioButton
             android:id="@+id/startCause_radioButton"
+            style="@style/RadioButtonsFontStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start a cause"
-            style="@style/RadioButtonsFontStyle"/>
+            android:text="Start a cause" />
     </RadioGroup>
 
 </LinearLayout>

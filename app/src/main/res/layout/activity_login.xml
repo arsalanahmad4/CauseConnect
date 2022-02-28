@@ -38,6 +38,7 @@
         android:layout_marginLeft="4pt"
         android:layout_marginTop="10pt"
         android:hint="Email"
+        android:textColorHint="@color/quantum_grey"
         android:background="@drawable/rounded_corner"/>
     <EditText
         android:id="@+id/password"
@@ -48,6 +49,7 @@
         android:layout_marginLeft="4pt"
         android:layout_marginRight="4pt"
         android:hint="Password"
+        android:textColorHint="@color/quantum_grey"
         android:inputType="textPassword"
         android:background="@drawable/rounded_corner"/>
     <Button
