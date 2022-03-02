@@ -8,27 +8,34 @@
     android:background="#ED3833"
     tools:context=".OrganizationPage">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_weight="0"
-        android:orientation="horizontal">
+        android:layout_margin="8dp">
+
+        <ImageView
+            android:id="@+id/navigate_button_organization"
+            android:layout_width="60dp"
+            android:layout_height="47dp"
+            android:clickable="true"
+            android:background="@color/quantum_grey"
+            android:src="@drawable/navigate"/>
 
         <ImageButton
             android:id="@+id/chat_button_org"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
+            android:layout_toLeftOf="@id/logout_button_org"
             app:srcCompat="@android:drawable/stat_notify_chat" />
 
         <ImageButton
             android:id="@+id/logout_button_org"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
             app:srcCompat="@drawable/logout_foreground" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
