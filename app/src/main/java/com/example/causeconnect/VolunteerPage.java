@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,7 @@ public class VolunteerPage extends AppCompatActivity {
     RadioButton findCause;
     RadioButton startCause;
     ImageButton chatButton,logout_button;
+    ImageView navigate_to_org;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     @Override
@@ -25,6 +27,8 @@ public class VolunteerPage extends AppCompatActivity {
         setContentView(R.layout.activity_volunteer_page);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        navigate_to_org= findViewById(R.id.navigate_button_volunteer);
 
         logout_button = findViewById(R.id.logout_button);
         chatButton = findViewById(R.id.chat_button);
@@ -43,6 +47,34 @@ public class VolunteerPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(VolunteerPage.this,StartCause.class);
                 startActivity(i);
+            }
+        });
+
+        navigate_to_org.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(VolunteerPage.this);
+                builder.setTitle("Shift")
+                        .setMessage("Do you want to move to Organization page?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(VolunteerPage.this,OrganizationPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog dialog  = builder.create();
+                dialog.show();
             }
         });
 

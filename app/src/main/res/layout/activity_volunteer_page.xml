@@ -8,29 +8,36 @@
     android:orientation="vertical"
     tools:context=".VolunteerPage">
 
-    <LinearLayout
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_weight="0"
-        android:orientation="horizontal">
+        android:layout_margin="8dp">
+        <ImageView
+            android:id="@+id/navigate_button_volunteer"
+            android:layout_width="60dp"
+            android:layout_height="47dp"
+            android:background="@color/quantum_grey"
+            android:clickable="true"
+            android:src="@drawable/navigate"/>
 
         <ImageButton
             android:id="@+id/chat_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@id/logout_button"
             app:srcCompat="@android:drawable/stat_notify_chat"
             tools:ignore="SpeakableTextPresentCheck"/>
         <ImageButton
             android:id="@+id/logout_button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/logout_foreground" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
