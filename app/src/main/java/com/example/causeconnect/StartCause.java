@@ -8,6 +8,7 @@ import static com.example.causeconnect.CreateEvent.name;
 import static com.example.causeconnect.CreateEvent.organizationName;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -20,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,9 +29,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.causeconnect.Model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -44,6 +53,8 @@ public class StartCause extends AppCompatActivity  {
     String userID;
     public static final String TAG = "TAG";
 
+    FirebaseUser firebaseUser;
+    DatabaseReference reference;
 
     EditText mName;
     EditText mOrgName;
@@ -59,6 +70,7 @@ public class StartCause extends AppCompatActivity  {
         setContentView(R.layout.activity_start_cause);
 
         mName = findViewById(R.id.name_of_org_creator);
+        autoFillName();
 
 
         mOrgName = findViewById(R.id.name_of_organization);
@@ -162,6 +174,26 @@ public class StartCause extends AppCompatActivity  {
                             }
                         });
 
+
+            }
+        });
+    }
+
+    public void autoFillName(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                mName.setText(user.getUsername());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

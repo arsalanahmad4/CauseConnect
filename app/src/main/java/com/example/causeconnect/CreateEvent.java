@@ -1,13 +1,14 @@
 package com.example.causeconnect;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,14 +19,20 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.bumptech.glide.Glide;
+import com.example.causeconnect.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,8 +40,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateEvent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+
+    FirebaseUser firebaseUser;
+    DatabaseReference reference;
 
     private AutoCompleteTextView mSearchText;
     private EditText mName;
@@ -51,7 +65,6 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
     public static String cause;
     public static String phoneNumber;
 
-
     private FirebaseFirestore cloudstorage;
 
 
@@ -62,7 +75,12 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        this.fStore = FirebaseFirestore.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
+
         mName= findViewById(R.id.name_of_event_creator);
+        autoFillName();
+
         mOrg= findViewById(R.id.org_name);
         mNumber = findViewById(R.id.phone_no);
 
@@ -177,9 +195,29 @@ public class CreateEvent extends AppCompatActivity implements AdapterView.OnItem
                                 mOrg.setAdapter(dataAdapter);
                             }
                         } else {
-                           // Log.d(TAG, "Error fetching data: ", task.getException());
+
                         }
                     }
                 });
+    }
+
+    public void autoFillName(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                mName.setText(user.getUsername());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
