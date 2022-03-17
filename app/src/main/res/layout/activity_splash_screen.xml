@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.367"
         android:elevation="16dp"
-        app:srcCompat="@drawable/app_icon" />
+        app:srcCompat="@drawable/image_vector"/>
 
     <TextView
         android:id="@+id/textView3"
